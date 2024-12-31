@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的 LINE Mini App</title>
+    <!-- 引入 LIFF SDK -->
+    <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+</head>
+<body>
+    <div id="app">
+        <h1>歡迎使用我的 LINE Mini App</h1>
+        <div id="profile">
+            <p>用戶資料載入中...</p>
+        </div>
+        <button id="sendMessageButton">發送訊息</button>
+    </div>
+
+    <script>
+        // 初始化 LIFF
+        liff.init({
+            liffId: "您的_LIFF_ID" // 替換成您的 LIFF ID
+        }).then(() => {
+            // 獲取用戶資料
+            if (liff.isLoggedIn()) {
+                getUserProfile();
+            } else {
+                liff.login();
+            }
+        }).catch((err) => {
+            console.error('LIFF 初始化失敗', err);
+        });
+
+        // 獲取用戶資料
+        function getUserProfile() {
+            liff.getProfile()
+                .then(profile => {
+                    document.getElementById('profile').innerHTML = `
+                        <p>歡迎, ${profile.displayName}!</p>
+                        <img src="${profile.pictureUrl}" alt="個人頭像" style="width:100px">
+                    `;
+                })
+                .catch((err) => {
+                    console.error('獲取用戶資料失敗', err);
+                });
+        }
+
+        // 發送訊息按鈕事件
+        document.getElementById('sendMessageButton').onclick = () => {
+            if (liff.isApiAvailable('shareTargetPicker')) {
+                liff.shareTargetPicker([
+                    {
+                        type: 'text',
+                        text: '這是來自我的 LINE Mini App 的訊息！'
+                    }
+                ])
+                .catch((err) => {
+                    console.error('發送訊息失敗', err);
+                });
+            }
+        };
+    </script>
+</body>
+</html> 
