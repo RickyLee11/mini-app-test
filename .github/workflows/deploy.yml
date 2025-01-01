@@ -23,9 +23,13 @@ jobs:
       - name: Install Dependencies
         run: npm install
         
+      - name: Create .env file
+        run: |
+          echo "VITE_LIFF_ID=${{ secrets.VITE_LIFF_ID }}" > .env
+          echo "檢查 .env 文件內容："
+          cat .env
+        
       - name: Build
-        env:
-          VITE_LIFF_ID: ${{ secrets.VITE_LIFF_ID }}
         run: npm run build
         
       - name: Setup Pages
