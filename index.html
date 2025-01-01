@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <!-- 引入 LIFF SDK -->
     <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 </head>
+
 <body>
     <div id="app">
         <h1>歡迎使用我的 LINE Mini App</h1>
@@ -16,10 +18,12 @@
         <button id="sendMessageButton">發送訊息</button>
     </div>
 
-    <script>
+    <script type="module">
         // 初始化 LIFF
+        const LIFF_ID = import.meta.env.VITE_LIFF_ID;
+        console.log('LIFF_ID:', LIFF_ID);
         liff.init({
-            liffId: "您的_LIFF_ID" // 替換成您的 LIFF ID
+            liffId: LIFF_ID // 從環境變數獲取 LIFF ID
         }).then(() => {
             // 獲取用戶資料
             if (liff.isLoggedIn()) {
@@ -54,11 +58,12 @@
                         text: '這是來自我的 LINE Mini App 的訊息！'
                     }
                 ])
-                .catch((err) => {
-                    console.error('發送訊息失敗', err);
-                });
+                    .catch((err) => {
+                        console.error('發送訊息失敗', err);
+                    });
             }
         };
     </script>
 </body>
-</html> 
+
+</html>
